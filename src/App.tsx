@@ -13,10 +13,12 @@ import Starfield from "./components/Starfield";
 import CursorGlow from "./components/CursorGlow";
 import ScrollProgress from "./components/ScrollProgress";
 import SmoothScroll from "./components/SmoothScroll";
+import Preloader from "./components/Preloader";
 
 export default function App() {
   return (
     <div className="relative min-h-screen bg-bg text-ink overflow-x-hidden">
+      <Preloader />
       <SmoothScroll />
       <Starfield />
       <CursorGlow />

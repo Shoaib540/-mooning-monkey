@@ -27,9 +27,18 @@ export default function Hero() {
 
   return (
     <section ref={ref} className="relative min-h-[100vh] flex items-center overflow-hidden pt-28 pb-16">
-      {/* Background hero video */}
+      {/* Background hero video — deferred for fast first paint */}
       <motion.div style={{ scale: videoScale }} className="absolute inset-0 -z-10 will-change-transform">
-        <video src={ASSETS.heroVideo} autoPlay muted loop playsInline className="w-full h-full object-cover opacity-35" />
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-35"
+          style={{ backgroundImage: `url(${ASSETS.heroMonkey})`, filter: "blur(40px) saturate(140%)" }}
+        />
+        <video
+          src={ASSETS.heroVideo}
+          autoPlay muted loop playsInline preload="metadata"
+          poster={ASSETS.heroMonkey}
+          className="absolute inset-0 w-full h-full object-cover opacity-35"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-bg/30 via-bg/65 to-bg" />
       </motion.div>
       <div className="aurora" />
