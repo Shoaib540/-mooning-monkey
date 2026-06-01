@@ -57,7 +57,19 @@ export default function Navbar() {
             <span className="w-2 h-2 rounded-full bg-neon-lime shadow-[0_0_10px_#c6ff3d] animate-pulse" />
             Mint Live
           </a>
-          <a href="#" className="btn-primary text-sm"><Wallet size={16} /> Connect Wallet</a>
+          {isConnected ? (
+            <div className="flex items-center gap-2 glass-strong rounded-full pl-1 pr-2 py-1">
+              <span className="w-7 h-7 rounded-full bg-gradient-to-tr from-neon-purple to-neon-pink shadow-glow" />
+              <span className="font-mono text-xs text-white">{address}</span>
+              <button onClick={disconnect} title="Disconnect" className="w-6 h-6 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition">
+                <LogOut size={12} />
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => setWalletOpen(true)} className="btn-primary text-sm">
+              <Wallet size={16} /> Connect Wallet
+            </button>
+          )}
         </div>
 
         <button onClick={() => setOpen(!open)} className="lg:hidden text-white p-2">
