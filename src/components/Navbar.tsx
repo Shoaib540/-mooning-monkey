@@ -1,7 +1,9 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ASSETS } from "../assets";
-import { Wallet, Menu, X } from "lucide-react";
+import { Wallet, Menu, X, LogOut } from "lucide-react";
 import { useState } from "react";
+import WalletModal from "./WalletModal";
+import { useWallet } from "../hooks/useWallet";
 
 const links = [
   { href: "#lore", label: "Lore" },
@@ -10,6 +12,8 @@ const links = [
   { href: "#game", label: "Crash Game" },
   { href: "#collection", label: "Collection" },
   { href: "#roadmap", label: "Roadmap" },
+  { href: "#team", label: "Team" },
+  { href: "#faq", label: "FAQ" },
 ];
 
 export default function Navbar() {
@@ -17,8 +21,11 @@ export default function Navbar() {
   const blur = useTransform(scrollY, [0, 200], [6, 16]);
   const bg = useTransform(scrollY, [0, 200], ["rgba(8,6,14,0.20)", "rgba(8,6,14,0.65)"]);
   const [open, setOpen] = useState(false);
+  const [walletOpen, setWalletOpen] = useState(false);
+  const { address, isConnected, connect, disconnect } = useWallet();
 
   return (
+    <>
     <motion.nav
       style={{ backdropFilter: blur.get() ? `blur(${blur.get()}px)` : undefined, background: bg }}
       className="fixed top-0 left-0 right-0 z-50 border-b border-white/5"
@@ -64,9 +71,15 @@ export default function Navbar() {
               {l.label}
             </a>
           ))}
-          <a href="#" className="btn-primary w-full justify-center"><Wallet size={16} /> Connect Wallet</a>
+          {isConnected ? (
+            <button onClick={disconnect} className="btn-ghost w-full justify-center"><LogOut size={14} /> Disconnect {address}</button>
+          ) : (
+            <button onClick={() => { setOpen(false); setWalletOpen(true); }} className="btn-primary w-full justify-center"><Wallet size={16} /> Connect Wallet</button>
+          )}
         </div>
       )}
     </motion.nav>
+    <WalletModal open={walletOpen} onClose={() => setWalletOpen(false)} onConnected={(a) => { connect(a); setWalletOpen(false); }} />
+    </>
   );
 }

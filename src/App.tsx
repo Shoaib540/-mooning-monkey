@@ -8,6 +8,8 @@ import CrashGame from "./components/CrashGame";
 import Collection from "./components/Collection";
 import Roadmap from "./components/Roadmap";
 import Comic from "./components/Comic";
+import Team from "./components/Team";
+import Faq from "./components/Faq";
 import Footer from "./components/Footer";
 import Starfield from "./components/Starfield";
 import CursorGlow from "./components/CursorGlow";
@@ -34,6 +36,8 @@ export default function App() {
         <Collection />
         <Roadmap />
         <Comic />
+        <Team />
+        <Faq />
       </main>
       <Footer />
     </div>
