@@ -1,45 +1,38 @@
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Marquee from "./components/Marquee";
-import Lore from "./components/Lore";
-import Evolution from "./components/Evolution";
-import Token from "./components/Token";
-import CrashGame from "./components/CrashGame";
-import Collection from "./components/Collection";
-import Roadmap from "./components/Roadmap";
-import Comic from "./components/Comic";
-import Team from "./components/Team";
-import Faq from "./components/Faq";
+import { useState } from "react";
+import Builder from "./components/Builder";
 import Footer from "./components/Footer";
-import Starfield from "./components/Starfield";
-import CursorGlow from "./components/CursorGlow";
-import ScrollProgress from "./components/ScrollProgress";
-import SmoothScroll from "./components/SmoothScroll";
-import Preloader from "./components/Preloader";
+import Hero from "./components/Hero";
+import Nav from "./components/Nav";
+import Pricing from "./components/Pricing";
+import ProModal from "./components/ProModal";
+import { isProUnlocked } from "./lib/storage";
+
+function shouldOpenProFromUrl(): boolean {
+  if (typeof window === "undefined") return false;
+  const params = new URLSearchParams(window.location.search);
+  return params.get("unlock") === "1" || params.get("pro") === "1";
+}
 
 export default function App() {
+  const [isPro, setIsPro] = useState(() =>
+    typeof window !== "undefined" ? isProUnlocked() : false,
+  );
+  const [proOpen, setProOpen] = useState(() => shouldOpenProFromUrl());
+
   return (
-    <div className="relative min-h-screen bg-bg text-ink overflow-x-hidden">
-      <Preloader />
-      <SmoothScroll />
-      <Starfield />
-      <CursorGlow />
-      <ScrollProgress />
-      <Navbar />
+    <div className="min-h-screen bg-navy-950 text-ink">
+      <Nav isPro={isPro} onUnlock={() => setProOpen(true)} />
       <main>
         <Hero />
-        <Marquee />
-        <Lore />
-        <Evolution />
-        <Token />
-        <CrashGame />
-        <Collection />
-        <Roadmap />
-        <Comic />
-        <Team />
-        <Faq />
+        <Builder isPro={isPro} onNeedPro={() => setProOpen(true)} />
+        <Pricing isPro={isPro} onEnterCode={() => setProOpen(true)} />
       </main>
       <Footer />
+      <ProModal
+        open={proOpen}
+        onClose={() => setProOpen(false)}
+        onUnlocked={() => setIsPro(true)}
+      />
     </div>
   );
 }

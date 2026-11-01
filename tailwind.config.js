@@ -4,59 +4,53 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: "#05030a",
-        bg2: "#0a0612",
-        ink: "#e8e6f0",
-        neon: {
-          purple: "#9b5cff",
-          pink: "#ff4dd2",
-          cyan: "#3df0ff",
-          lime: "#c6ff3d",
-          gold: "#ffcf3d",
+        navy: {
+          950: "#050d18",
+          900: "#0a1628",
+          800: "#12233a",
+          700: "#1a3352",
         },
+        ink: "#eef2f7",
+        mute: "#8fa3bc",
+        paper: "#f7f4ee",
+        marigold: {
+          DEFAULT: "#e8a317",
+          soft: "#f6c65a",
+          deep: "#b8790a",
+        },
+        sea: "#2ec4b6",
       },
       fontFamily: {
-        display: ['"Space Grotesk"', "system-ui", "sans-serif"],
-        body: ['"Inter"', "system-ui", "sans-serif"],
-        mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
+        display: ['"Syne"', "system-ui", "sans-serif"],
+        body: ['"Figtree"', "system-ui", "sans-serif"],
+        mono: ['"IBM Plex Mono"', "ui-monospace", "monospace"],
       },
       backgroundImage: {
-        "grid-faint":
-          "linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)",
-        "radial-glow":
-          "radial-gradient(60% 60% at 50% 30%, rgba(155,92,255,0.35), rgba(0,0,0,0) 60%)",
-      },
-      boxShadow: {
-        glow: "0 0 60px rgba(155,92,255,0.35)",
-        glowPink: "0 0 60px rgba(255,77,210,0.35)",
-        glowCyan: "0 0 60px rgba(61,240,255,0.35)",
+        "hero-wash":
+          "radial-gradient(80% 70% at 70% 20%, rgba(232,163,23,0.22), transparent 55%), radial-gradient(60% 50% at 10% 80%, rgba(46,196,182,0.12), transparent 50%), linear-gradient(160deg, #050d18 0%, #0a1628 45%, #12233a 100%)",
+        "grid-soft":
+          "linear-gradient(to right, rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.035) 1px, transparent 1px)",
       },
       animation: {
-        float: "float 6s ease-in-out infinite",
-        marquee: "marquee 30s linear infinite",
-        shine: "shine 2.5s linear infinite",
-        pulseGlow: "pulseGlow 2.6s ease-in-out infinite",
+        "fade-up": "fadeUp 0.7s ease-out both",
+        "sheet-in": "sheetIn 0.9s cubic-bezier(0.22,1,0.36,1) both",
+        shimmer: "shimmer 2.8s linear infinite",
       },
       keyframes: {
-        float: {
-          "0%,100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-14px)" },
+        fadeUp: {
+          "0%": { opacity: "0", transform: "translateY(18px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
-        marquee: {
-          "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(-50%)" },
+        sheetIn: {
+          "0%": { opacity: "0", transform: "translateY(40px) rotate(2deg)" },
+          "100%": { opacity: "1", transform: "translateY(0) rotate(0deg)" },
         },
-        shine: {
+        shimmer: {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
-        },
-        pulseGlow: {
-          "0%,100%": { opacity: "0.6", filter: "blur(20px)" },
-          "50%": { opacity: "1", filter: "blur(28px)" },
         },
       },
     },
   },
   plugins: [],
-}
-
+};
