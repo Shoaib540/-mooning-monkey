@@ -7,20 +7,20 @@ type Props = {
 
 export default function Nav({ isPro, onUnlock }: Props) {
   return (
-    <header className="no-print absolute inset-x-0 top-0 z-40">
+    <header className="absolute inset-x-0 top-0 z-40">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 md:px-8">
-        <a href="#top" className="font-display text-xl font-extrabold tracking-tight text-ink md:text-2xl">
-          Naya<span className="text-marigold">Bill</span>
+        <a href="#top" className="font-display text-xl font-extrabold tracking-tight text-mist md:text-2xl">
+          Scale<span className="text-go">Gate</span>
         </a>
         <nav className="flex items-center gap-2 md:gap-3">
-          <a href="#builder" className="hidden text-sm font-medium text-mute hover:text-ink sm:inline">
-            Create
+          <a href="#calc" className="hidden text-sm font-medium text-mute hover:text-mist sm:inline">
+            Calculator
           </a>
-          <a href="#pricing" className="hidden text-sm font-medium text-mute hover:text-ink sm:inline">
+          <a href="#pricing" className="hidden text-sm font-medium text-mute hover:text-mist sm:inline">
             Pricing
           </a>
           {isPro ? (
-            <span className="inline-flex items-center gap-1.5 rounded-md border border-sea/40 bg-sea/10 px-3 py-1.5 text-xs font-bold text-sea">
+            <span className="inline-flex items-center gap-1.5 rounded-md border border-go/40 bg-go/10 px-3 py-1.5 text-xs font-bold text-go">
               <Unlock size={14} /> Pro
             </span>
           ) : (

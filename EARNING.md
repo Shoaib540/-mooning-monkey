@@ -1,50 +1,44 @@
-# NayaBill — how you actually make $30–40/day
+# ScaleGate — earning reality check
 
-## Honest math
+## Why we killed NayaBill (freelancer invoices)
 
-| Path | Math to ~$35/day |
-| --- | --- |
-| Pro lifetime ($19) | **2 sales/day** |
-| Pro + occasional $9 tip pack | 1–2 sales/day |
-| Free users only | $0 — free is the funnel |
+- Pakistani freelancers have **low willingness to pay** after AI crushed commodity gigs.
+- Invoice / WhatsApp bill tools already exist; differentiation was weak.
+- Selling *to* struggling freelancers is a bad customer pool for $30–40/day.
 
-This is not passive on day one. The app is the product. Traffic + checkout = money.
+## Who actually has budget
 
-## Accounts you must create (send me the secrets after)
+**COD / Meta-ads sellers** (PK, IN, NG, prepaid Shopify) already spend on Facebook/TikTok.
+They lose money by scaling blind — Max CPA / break-even ROAS is a buying trigger.
 
-1. **Gumroad** (easiest for Pakistan + Payoneer) or **Lemon Squeezy**
-   - Product name: `NayaBill Pro Lifetime`
-   - Price: **$19**
-   - Content delivery: a text file / email with unlock codes
-2. **Payoneer** (or Gumroad payout method that works in PK)
-3. **Netlify** (repo already has `netlify.toml`) — connect this GitHub repo
-4. Optional: custom domain (`nayabill.com` / `.app`)
+Full COD operating systems (Chatcart, ShipUp, OrderPulse, SellerHub) are crowded.
+ScaleGate is **not** competing with them — it’s a sharp free→Pro calculator, not a courier OS.
 
-## Env vars to paste in Netlify
+## Math to ~$35–54/day
 
-```
-VITE_CHECKOUT_URL=https://YOUR_GUMROAD_OR_LEMON_CHECKOUT_URL
-VITE_PRO_CODES=NAYA-A7K2,NAYA-B9M4,NAYA-C3Q8,...
-```
+| Product | Price | Sales needed |
+| --- | --- | --- |
+| ScaleGate Pro lifetime | **$27** | **~2/day → ~$54** or **1–2/day → $27–54** |
 
-Generate ~50 unique codes. Put the same list in Gumroad’s “send license key” / product content. After a buyer pays, they paste the code in the app.
+## Accounts you still must provide
 
-## Distribution that can hit 2 sales/day (do these in parallel)
+1. Gumroad / Lemon Squeezy product @ $27 + unlock codes  
+2. Netlify env:
+   ```
+   VITE_CHECKOUT_URL=...
+   VITE_PRO_CODES=SCALE-A1,SCALE-B2,...
+   ```
+3. Payoneer (or Gumroad payout)
 
-1. **Pakistani freelancers** — post in Facebook groups: Freelancers Pakistan, Upwork Pakistan, Graphic Designers PK (value post + link, not spam).
-2. **Reddit** — r/freelance, r/forhire adjacent tips, r/Pakistan (careful with promo rules).
-3. **TikTok / Reels** — 20–30s screen recordings: “Invoice bhejo WhatsApp pe 30 sec mein”.
-4. **Product Hunt / Peerlist** — launch once Netlify + Gumroad are live.
-5. **Fiverr gig upsell** — if you already freelance, send NayaBill link after delivery.
+Demo code: `SCALE-DEMO-2026`
 
-## What I already built
+## Distribution (sellers, not freelancers)
 
-- Live invoice builder (JazzCash, Easypaisa, bank, Payoneer)
-- WhatsApp message + PDF/print
-- Free limit (3/month) → Pro unlock
-- Demo unlock code for testing: `NAYA-DEMO-2026`
+- Facebook groups: Daraz sellers, COD Pakistan, Shopify Pakistan, dropshipping (value posts)
+- TikTok/Reels: “Rs 1200 CPA — scale or kill?” screen recording
+- Reddit: r/PPC, r/shopify, r/EntrepreneurRideAlong
+- SEO pages later: “COD break even calculator Pakistan”
 
-## What blocks real money right now
+## Honest constraint
 
-Without your **checkout URL + payout account**, the Buy button cannot receive cash.  
-Reply with Gumroad/Lemon link (or ask me to walk you through creating it) and I will wire `VITE_CHECKOUT_URL`, redeploy instructions, and marketing copy packs next.
+Checkout + traffic = money. No account = $0. No ads/posts = slow organic only.

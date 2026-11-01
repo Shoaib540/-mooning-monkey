@@ -1,24 +1,19 @@
-# Ready-to-post copy (Urdu / English)
+# ScaleGate posts
 
-## Facebook / WhatsApp status (Urdu)
+## Facebook / WhatsApp (Urdu-English mix)
 
-Freelancers: client ko invoice WhatsApp pe professional dikhao.
-JazzCash / Easypaisa / Payoneer details ek message mein.
-NayaBill — free mein 3 invoices/month.
-Pro lifetime sirf $19.
-Link: [YOUR_NETLIFY_URL]
+COD chala rahe ho aur ROAS “achha” lag raha hai — lekin RTO ke baad?
+ScaleGate pe 30 sec mein dekho: max CPA kitni honi chahiye.
+Free calculator. Pro $27 lifetime.
+[URL]
 
-## TikTok / Reel script (20s)
+## Reel script (15–20s)
 
-1. “Client payment mangni hai?”
-2. Screen: fill invoice in NayaBill
-3. Tap Send on WhatsApp — message opens
-4. “$19 lifetime Pro. Link bio mein.”
+1. Show Ads Manager CPA
+2. Punch into ScaleGate with sell price, COGS, RTO %
+3. Big KILL or SCALE verdict
+4. “Link in bio — free”
 
-## Reddit / Indie Hackers
+## Reddit
 
-I built NayaBill — a WhatsApp-first invoice tool for freelancers who get paid via JazzCash, Easypaisa, or Payoneer. Free for 3 invoices/month, $19 lifetime Pro. Feedback welcome: [URL]
-
-## Product Hunt tagline
-
-WhatsApp invoices for freelancers who get paid in PKR & USD
+Built a tiny COD unit-economics gate (max CPA after RTO + courier + COD fee). Looking for feedback from media buyers who’ve been burned by “good ROAS” that still lost money: [URL]

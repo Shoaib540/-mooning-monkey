@@ -1,6 +1,10 @@
-# NayaBill
+# ScaleGate
 
-Invoice + WhatsApp payment requests for freelancers (JazzCash, Easypaisa, bank, Payoneer).
+Max ad CPA & break-even ROAS after COD fees, courier costs, and RTO.
+
+## Why this (not freelancer invoices)
+
+Pakistani freelancers are a weak paying market post-AI. ScaleGate targets **sellers who already buy ads**.
 
 ## Dev
 
@@ -9,15 +13,6 @@ npm install
 npm run dev
 ```
 
-## Build
-
-```bash
-npm run build
-npm run preview
-```
-
 ## Monetization
 
-See [EARNING.md](./EARNING.md). Configure checkout via `.env.example`.
-
-Demo Pro code: `NAYA-DEMO-2026`
+See [EARNING.md](./EARNING.md). Demo Pro code: `SCALE-DEMO-2026`

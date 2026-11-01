@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Builder from "./components/Builder";
+import Calculator from "./components/Calculator";
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Nav from "./components/Nav";
@@ -20,11 +20,11 @@ export default function App() {
   const [proOpen, setProOpen] = useState(() => shouldOpenProFromUrl());
 
   return (
-    <div className="min-h-screen bg-navy-950 text-ink">
+    <div className="min-h-screen bg-void-950 text-mist">
       <Nav isPro={isPro} onUnlock={() => setProOpen(true)} />
       <main>
         <Hero />
-        <Builder isPro={isPro} onNeedPro={() => setProOpen(true)} />
+        <Calculator isPro={isPro} onNeedPro={() => setProOpen(true)} />
         <Pricing isPro={isPro} onEnterCode={() => setProOpen(true)} />
       </main>
       <Footer />
