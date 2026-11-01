@@ -14,31 +14,22 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: "Manrope", system-ui, sans-serif;
-  background: #050608;
-  color: #c6d0dd;
-  text-rendering: optimizeLegibility;
+  background: #0c0a09;
+  color: #f5f0e8;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: rgba(61, 255, 181, 0.28);
+  background: rgba(249, 115, 22, 0.35);
   color: #fff;
 }
 
 @layer components {
-  .field {
-    @apply w-full rounded-md border border-white/10 bg-void-900/90 px-3 py-2.5 text-sm text-mist outline-none transition placeholder:text-mute/50 focus:border-go/50 focus:ring-1 focus:ring-go/30;
-  }
-
-  .label {
-    @apply mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.14em] text-mute;
-  }
-
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-md bg-go px-5 py-3 text-sm font-bold text-void-950 transition hover:brightness-110 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-blaze px-5 py-3 text-sm font-bold text-ink-950 transition hover:bg-blaze-deep active:scale-[0.98];
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-md border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-mist transition hover:border-go/40 hover:bg-white/10;
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-sand transition hover:border-blaze/50 hover:bg-white/10;
   }
 }

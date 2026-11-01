@@ -1,19 +1,12 @@
-# ScaleGate posts
+# Status / story posts (Urdu)
 
-## Facebook / WhatsApp (Urdu-English mix)
+Apps mat banao pehle — order lo.
+Foran packages:
+• Listing Pack Rs 5,000 (same day)
+• WhatsApp Reply System Rs 12,000
+• AI Inbox Rs 35,000
+WhatsApp pe “Foran” likh ke bhejo.
 
-COD chala rahe ho aur ROAS “achha” lag raha hai — lekin RTO ke baad?
-ScaleGate pe 30 sec mein dekho: max CPA kitni honi chahiye.
-Free calculator. Pro $27 lifetime.
-[URL]
+# Fiverr buyer request reply
 
-## Reel script (15–20s)
-
-1. Show Ads Manager CPA
-2. Punch into ScaleGate with sell price, COGS, RTO %
-3. Big KILL or SCALE verdict
-4. “Link in bio — free”
-
-## Reddit
-
-Built a tiny COD unit-economics gate (max CPA after RTO + courier + COD fee). Looking for feedback from media buyers who’ve been burned by “good ROAS” that still lost money: [URL]
+Thanks for the message — send your niche + product list / top FAQs and I’ll confirm delivery time today.

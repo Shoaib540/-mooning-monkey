@@ -1,10 +1,20 @@
-# ScaleGate
+# Foran
 
-Max ad CPA & break-even ROAS after COD fees, courier costs, and RTO.
+Productized AI service machine for same-day / 48h cash — not a speculative SaaS.
 
-## Why this (not freelancer invoices)
+## Packages
 
-Pakistani freelancers are a weak paying market post-AI. ScaleGate targets **sellers who already buy ads**.
+- Listing Pack — Rs 5,000 / $25
+- WhatsApp Reply System — Rs 12,000 / $45
+- AI Inbox Setup — Rs 35,000 / $120
+
+## Start cash today
+
+1. `kit/FIVERR.md` — publish gigs  
+2. `kit/WHATSAPP_OUTREACH.md` — message 20 shops  
+3. `kit/DELIVERY_SOP.md` — fulfill with Cursor  
+
+See `EARNING.md`.
 
 ## Dev
 
@@ -13,6 +23,4 @@ npm install
 npm run dev
 ```
 
-## Monetization
-
-See [EARNING.md](./EARNING.md). Demo Pro code: `SCALE-DEMO-2026`
+Set `VITE_WHATSAPP=92XXXXXXXXXX` for Order buttons.

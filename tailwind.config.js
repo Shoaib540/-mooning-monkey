@@ -4,48 +4,35 @@ export default {
   theme: {
     extend: {
       colors: {
-        void: {
-          950: "#050608",
-          900: "#0b0e13",
-          800: "#141922",
-          700: "#1e2633",
+        ink: {
+          950: "#0c0a09",
+          900: "#1c1917",
+          800: "#292524",
         },
-        mist: "#c6d0dd",
-        mute: "#7d8b9e",
-        signal: {
-          DEFAULT: "#ff4d3a",
-          soft: "#ff7a6b",
+        sand: "#f5f0e8",
+        fog: "#a8a29e",
+        blaze: {
+          DEFAULT: "#f97316",
+          deep: "#ea580c",
         },
-        go: {
-          DEFAULT: "#3dffb5",
-          dim: "#1fa87a",
-        },
-        warn: "#ffc14d",
+        leaf: "#16a34a",
       },
       fontFamily: {
-        display: ['"Bricolage Grotesque"', "system-ui", "sans-serif"],
+        display: ['"Syne"', "system-ui", "sans-serif"],
         body: ['"Manrope"', "system-ui", "sans-serif"],
-        mono: ['"IBM Plex Mono"', "ui-monospace", "monospace"],
       },
       backgroundImage: {
-        stage:
-          "radial-gradient(70% 55% at 85% 10%, rgba(61,255,181,0.12), transparent 50%), radial-gradient(55% 45% at 10% 90%, rgba(255,77,58,0.10), transparent 45%), linear-gradient(165deg, #050608 0%, #0b0e13 50%, #141922 100%)",
-        hatch:
-          "linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)",
+        forge:
+          "radial-gradient(70% 50% at 80% 0%, rgba(249,115,22,0.22), transparent 55%), radial-gradient(50% 40% at 10% 100%, rgba(22,163,74,0.10), transparent 50%), linear-gradient(160deg, #0c0a09 0%, #1c1917 55%, #292524 100%)",
       },
       keyframes: {
         rise: {
-          "0%": { opacity: "0", transform: "translateY(16px)" },
+          "0%": { opacity: "0", transform: "translateY(14px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        pulseBar: {
-          "0%,100%": { transform: "scaleX(0.92)", opacity: "0.7" },
-          "50%": { transform: "scaleX(1)", opacity: "1" },
         },
       },
       animation: {
-        rise: "rise 0.65s ease-out both",
-        pulseBar: "pulseBar 2.4s ease-in-out infinite",
+        rise: "rise 0.6s ease-out both",
       },
     },
   },
