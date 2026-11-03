@@ -4,59 +4,67 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: "#05030a",
-        bg2: "#0a0612",
-        ink: "#e8e6f0",
-        neon: {
-          purple: "#9b5cff",
-          pink: "#ff4dd2",
-          cyan: "#3df0ff",
-          lime: "#c6ff3d",
-          gold: "#ffcf3d",
+        void: "#02060c",
+        panel: "#07111c",
+        panel2: "#0b1826",
+        line: "rgba(86, 214, 255, 0.18)",
+        ink: "#d7f4ff",
+        mute: "#7ea8bd",
+        cyan: {
+          DEFAULT: "#56d6ff",
+          soft: "#9ae8ff",
+          deep: "#1090c8",
         },
+        amber: {
+          DEFAULT: "#ffc14d",
+          soft: "#ffe0a3",
+        },
+        rose: "#ff6b8a",
       },
       fontFamily: {
-        display: ['"Space Grotesk"', "system-ui", "sans-serif"],
-        body: ['"Inter"', "system-ui", "sans-serif"],
-        mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
-      },
-      backgroundImage: {
-        "grid-faint":
-          "linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)",
-        "radial-glow":
-          "radial-gradient(60% 60% at 50% 30%, rgba(155,92,255,0.35), rgba(0,0,0,0) 60%)",
+        display: ['"Orbitron"', "sans-serif"],
+        body: ['"Rajdhani"', "sans-serif"],
+        mono: ['"Share Tech Mono"', "ui-monospace", "monospace"],
       },
       boxShadow: {
-        glow: "0 0 60px rgba(155,92,255,0.35)",
-        glowPink: "0 0 60px rgba(255,77,210,0.35)",
-        glowCyan: "0 0 60px rgba(61,240,255,0.35)",
+        hud: "0 0 0 1px rgba(86,214,255,0.18), 0 0 40px rgba(16,144,200,0.18)",
+        orb: "0 0 80px rgba(86,214,255,0.45), 0 0 160px rgba(16,144,200,0.25)",
       },
-      animation: {
-        float: "float 6s ease-in-out infinite",
-        marquee: "marquee 30s linear infinite",
-        shine: "shine 2.5s linear infinite",
-        pulseGlow: "pulseGlow 2.6s ease-in-out infinite",
+      backgroundImage: {
+        grid:
+          "linear-gradient(rgba(86,214,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(86,214,255,0.06) 1px, transparent 1px)",
+        radar:
+          "radial-gradient(circle at center, rgba(86,214,255,0.18), transparent 55%)",
       },
       keyframes: {
-        float: {
+        spinSlow: {
+          to: { transform: "rotate(360deg)" },
+        },
+        pulseRing: {
+          "0%,100%": { opacity: "0.35", transform: "scale(0.92)" },
+          "50%": { opacity: "1", transform: "scale(1.05)" },
+        },
+        scan: {
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "translateY(100%)" },
+        },
+        floatY: {
           "0%,100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-14px)" },
+          "50%": { transform: "translateY(-10px)" },
         },
-        marquee: {
-          "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(-50%)" },
+        dash: {
+          to: { strokeDashoffset: "-24" },
         },
-        shine: {
-          "0%": { backgroundPosition: "-200% 0" },
-          "100%": { backgroundPosition: "200% 0" },
-        },
-        pulseGlow: {
-          "0%,100%": { opacity: "0.6", filter: "blur(20px)" },
-          "50%": { opacity: "1", filter: "blur(28px)" },
-        },
+      },
+      animation: {
+        spinSlow: "spinSlow 18s linear infinite",
+        spinMed: "spinSlow 10s linear infinite",
+        pulseRing: "pulseRing 2.4s ease-in-out infinite",
+        scan: "scan 3.5s linear infinite",
+        floatY: "floatY 5s ease-in-out infinite",
+        dash: "dash 1s linear infinite",
       },
     },
   },
   plugins: [],
-}
-
+};
