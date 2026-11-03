@@ -1,73 +1,46 @@
-# React + TypeScript + Vite
+# Shoaib
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal cinematic desktop intelligence — original product named **Shoaib**.
 
-Currently, two official plugins are available:
+Not affiliated with Stonic AI.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Why it’s stronger
 
-## React Compiler
+- **Live weather** via Open-Meteo (no API key)
+- **Live news** from BBC + NPR RSS
+- **Live crypto** from CoinGecko
+- **Wikipedia research**
+- **Public IP / geo**
+- **System diagnostics** (full in Electron)
+- Voice in/out, memory, tasks, personalities
+- OpenAI / Groq / OpenRouter / custom model providers
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Run
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev            # browser
+npm run dev:electron   # desktop window
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Voice hotkey (Electron): `Ctrl+Shift+S`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Try saying
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- `play music` / `play jazz` / `next station`
+- `play Believer` (opens YouTube Music search)
+- `pause music` / `stop music`
+- `weather in Karachi`
+- `world news`
+- `wiki quantum computing`
+- `bitcoin price`
+- `system status`
+- `open youtube`
+- `remember that I like jazz`
+- `calculate 24 * 17`
+
+## Build installer
+
+```bash
+npm run dist
 ```

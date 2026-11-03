@@ -4,59 +4,54 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: "#05030a",
-        bg2: "#0a0612",
-        ink: "#e8e6f0",
-        neon: {
-          purple: "#9b5cff",
-          pink: "#ff4dd2",
-          cyan: "#3df0ff",
-          lime: "#c6ff3d",
-          gold: "#ffcf3d",
+        void: "#07080a",
+        panel: "#101318",
+        panel2: "#161b22",
+        line: "rgba(184, 255, 60, 0.16)",
+        ink: "#eef3f0",
+        mute: "#8b968c",
+        signal: {
+          DEFAULT: "#b8ff3c",
+          soft: "#d8ff8f",
+          deep: "#6fad12",
         },
+        platinum: "#d7dee8",
+        amber: "#ffb347",
+        rose: "#ff6b7a",
       },
       fontFamily: {
-        display: ['"Space Grotesk"', "system-ui", "sans-serif"],
-        body: ['"Inter"', "system-ui", "sans-serif"],
-        mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
-      },
-      backgroundImage: {
-        "grid-faint":
-          "linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)",
-        "radial-glow":
-          "radial-gradient(60% 60% at 50% 30%, rgba(155,92,255,0.35), rgba(0,0,0,0) 60%)",
+        display: ['"Syne"', "sans-serif"],
+        body: ['"DM Sans"', "sans-serif"],
+        mono: ['"IBM Plex Mono"', "ui-monospace", "monospace"],
       },
       boxShadow: {
-        glow: "0 0 60px rgba(155,92,255,0.35)",
-        glowPink: "0 0 60px rgba(255,77,210,0.35)",
-        glowCyan: "0 0 60px rgba(61,240,255,0.35)",
+        hud: "0 0 0 1px rgba(184,255,60,0.14), 0 20px 60px rgba(0,0,0,0.45)",
+        orb: "0 0 90px rgba(184,255,60,0.28), 0 0 160px rgba(111,173,18,0.18)",
       },
-      animation: {
-        float: "float 6s ease-in-out infinite",
-        marquee: "marquee 30s linear infinite",
-        shine: "shine 2.5s linear infinite",
-        pulseGlow: "pulseGlow 2.6s ease-in-out infinite",
+      backgroundImage: {
+        grid:
+          "linear-gradient(rgba(184,255,60,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(184,255,60,0.045) 1px, transparent 1px)",
+        aurora:
+          "radial-gradient(ellipse 70% 45% at 20% 0%, rgba(184,255,60,0.16), transparent 55%), radial-gradient(ellipse 50% 40% at 90% 10%, rgba(215,222,232,0.08), transparent 50%)",
       },
       keyframes: {
-        float: {
+        spinSlow: { to: { transform: "rotate(360deg)" } },
+        pulseRing: {
+          "0%,100%": { opacity: "0.4", transform: "scale(0.94)" },
+          "50%": { opacity: "1", transform: "scale(1.04)" },
+        },
+        floatY: {
           "0%,100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-14px)" },
+          "50%": { transform: "translateY(-8px)" },
         },
-        marquee: {
-          "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(-50%)" },
-        },
-        shine: {
-          "0%": { backgroundPosition: "-200% 0" },
-          "100%": { backgroundPosition: "200% 0" },
-        },
-        pulseGlow: {
-          "0%,100%": { opacity: "0.6", filter: "blur(20px)" },
-          "50%": { opacity: "1", filter: "blur(28px)" },
-        },
+      },
+      animation: {
+        spinSlow: "spinSlow 22s linear infinite",
+        spinMed: "spinSlow 12s linear infinite reverse",
+        pulseRing: "pulseRing 2.6s ease-in-out infinite",
+        floatY: "floatY 5s ease-in-out infinite",
       },
     },
   },
   plugins: [],
-}
-
+};
