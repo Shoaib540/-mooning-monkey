@@ -4,20 +4,26 @@ export default function TasksPanel({ tasks }: { tasks: TaskItem[] }) {
   return (
     <div className="hud-panel h-full overflow-hidden">
       <div className="border-b border-line px-4 py-3">
-        <p className="hud-label">Task System</p>
-        <p className="hud-title mt-1">Executed Directives</p>
+        <p className="hud-label">Execution log</p>
+        <p className="hud-title">Tasks</p>
       </div>
       <div className="space-y-3 overflow-y-auto p-4">
         {tasks.length === 0 && (
           <p className="font-mono text-sm text-mute">
-            No tasks yet. Try “open github”, “play music”, or “system status”.
+            No tasks yet. Try weather, news, crypto, wiki, or system status.
           </p>
         )}
         {tasks.map((t) => (
-          <div key={t.id} className="rounded-sm border border-line bg-void/40 p-3">
+          <div key={t.id} className="rounded-2xl border border-line bg-void/40 p-3">
             <div className="flex items-center justify-between gap-3">
-              <p className="font-display text-sm tracking-[0.12em]">{t.title}</p>
-              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-cyan">
+              <p className="font-display text-sm font-semibold">{t.title}</p>
+              <span
+                className={
+                  t.status === "failed"
+                    ? "font-mono text-[10px] uppercase tracking-[0.16em] text-rose"
+                    : "font-mono text-[10px] uppercase tracking-[0.16em] text-signal"
+                }
+              >
                 {t.status}
               </span>
             </div>

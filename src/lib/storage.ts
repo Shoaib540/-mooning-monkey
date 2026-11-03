@@ -1,26 +1,27 @@
 import type { AppSettings, ChatMessage, MemoryItem, TaskItem } from "../types";
 
 const KEYS = {
-  settings: "stonic.settings.v1",
-  messages: "stonic.messages.v1",
-  memory: "stonic.memory.v1",
-  tasks: "stonic.tasks.v1",
-  booted: "stonic.booted.v1",
+  settings: "shoaib.settings.v1",
+  messages: "shoaib.messages.v1",
+  memory: "shoaib.memory.v1",
+  tasks: "shoaib.tasks.v1",
 } as const;
 
 export const defaultSettings: AppSettings = {
   displayName: "Commander",
-  assistantName: "Stonic",
+  assistantName: "Shoaib",
   personality: "jarvis",
-  customPersonality: "A calm cinematic AI companion with dry wit.",
+  customPersonality:
+    "A precise, confident desktop intelligence with dry humor and zero fluff.",
   voiceGender: "male",
   voiceEnabled: true,
   autoGreet: true,
+  homeCity: "Karachi",
   apiProvider: "demo",
   apiKey: "",
   apiBaseUrl: "https://api.openai.com/v1",
   model: "gpt-4o-mini",
-  wakeWord: "stonic",
+  wakeWord: "shoaib",
 };
 
 function read<T>(key: string, fallback: T): T {
@@ -46,6 +47,4 @@ export const storage = {
   setMemory: (value: MemoryItem[]) => write(KEYS.memory, value),
   getTasks: () => read<TaskItem[]>(KEYS.tasks, []),
   setTasks: (value: TaskItem[]) => write(KEYS.tasks, value),
-  getBooted: () => read(KEYS.booted, false),
-  setBooted: (value: boolean) => write(KEYS.booted, value),
 };

@@ -1,13 +1,12 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const LINES = [
-  "Booting Stonic neural substrate…",
-  "Calibrating voice matrix…",
-  "Loading memory lattice…",
-  "Linking desktop interface…",
-  "Synchronizing HUD panels…",
-  "Core online. Awaiting commander.",
+  "Igniting Shoaib core…",
+  "Binding live weather + news meshes…",
+  "Calibrating voice channel…",
+  "Mounting memory lattice…",
+  "Desktop bridge ready.",
 ];
 
 export default function BootSequence({ onDone }: { onDone: () => void }) {
@@ -17,11 +16,11 @@ export default function BootSequence({ onDone }: { onDone: () => void }) {
   useEffect(() => {
     const lineTimer = window.setInterval(() => {
       setIndex((i) => Math.min(i + 1, LINES.length - 1));
-    }, 520);
+    }, 480);
     const progressTimer = window.setInterval(() => {
-      setProgress((p) => Math.min(p + 2.2, 100));
-    }, 60);
-    const done = window.setTimeout(onDone, 3400);
+      setProgress((p) => Math.min(p + 2.4, 100));
+    }, 55);
+    const done = window.setTimeout(onDone, 3000);
     return () => {
       clearInterval(lineTimer);
       clearInterval(progressTimer);
@@ -30,53 +29,42 @@ export default function BootSequence({ onDone }: { onDone: () => void }) {
   }, [onDone]);
 
   return (
-    <AnimatePresence>
-      <motion.div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-void"
-        initial={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="absolute inset-0 bg-grid bg-[size:48px_48px] opacity-30" />
-        <div className="absolute inset-0 scanlines opacity-40" />
-        <motion.div
-          className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan to-transparent"
-          animate={{ top: ["10%", "90%", "10%"] }}
-          transition={{ duration: 3.2, repeat: Infinity, ease: "linear" }}
-        />
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-void"
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="absolute inset-0 bg-aurora" />
+      <div className="absolute inset-0 bg-grid bg-[size:42px_42px] opacity-40" />
 
-        <div className="relative z-10 w-[min(560px,92vw)] px-6 text-center">
-          <motion.p
-            className="font-display text-4xl tracking-[0.35em] text-cyan md:text-5xl"
-            initial={{ opacity: 0, letterSpacing: "0.6em" }}
-            animate={{ opacity: 1, letterSpacing: "0.35em" }}
-            transition={{ duration: 1.1 }}
-          >
-            STONIC
-          </motion.p>
-          <p className="mt-2 font-mono text-xs uppercase tracking-[0.4em] text-mute">
-            Generation 3 · Desktop Intelligence
-          </p>
+      <div className="relative z-10 w-[min(560px,92vw)] px-6 text-center">
+        <motion.p
+          className="font-display text-5xl font-extrabold tracking-tight text-ink md:text-6xl"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          Shoaib
+        </motion.p>
+        <p className="mt-3 font-mono text-xs uppercase tracking-[0.35em] text-signal">
+          Personal Desktop Intelligence
+        </p>
 
-          <div className="mt-10 h-1.5 overflow-hidden rounded-full bg-white/5">
-            <motion.div
-              className="h-full bg-gradient-to-r from-cyan-deep via-cyan to-amber"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-
-          <div className="mt-6 min-h-[1.5rem] font-mono text-sm text-cyan-soft">
-            {LINES[index]}
-          </div>
-
-          <button
-            className="no-drag mt-8 font-mono text-[11px] uppercase tracking-[0.28em] text-mute transition hover:text-cyan"
-            onClick={onDone}
-          >
-            Skip intro
-          </button>
+        <div className="mt-10 h-1.5 overflow-hidden rounded-full bg-white/5">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-signal-deep via-signal to-platinum"
+            style={{ width: `${progress}%` }}
+          />
         </div>
-      </motion.div>
-    </AnimatePresence>
+        <p className="mt-5 min-h-[1.4rem] font-mono text-sm text-mute">{LINES[index]}</p>
+        <button
+          className="no-drag mt-8 font-mono text-[11px] uppercase tracking-[0.28em] text-mute transition hover:text-signal"
+          onClick={onDone}
+        >
+          Skip intro
+        </button>
+      </div>
+    </motion.div>
   );
 }

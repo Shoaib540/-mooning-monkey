@@ -11,11 +11,13 @@ import TasksPanel from "./components/TasksPanel";
 import TitleBar from "./components/TitleBar";
 import WorldMonitor from "./components/WorldMonitor";
 import { useAssistant } from "./hooks/useAssistant";
+import { useLiveWorld } from "./hooks/useLiveWorld";
 import type { ViewId } from "./types";
 
 export default function App() {
   const [view, setView] = useState<ViewId>("core");
   const assistant = useAssistant();
+  const world = useLiveWorld(assistant.settings.homeCity);
 
   return (
     <div className="flex h-screen flex-col overflow-hidden text-ink">
@@ -27,8 +29,7 @@ export default function App() {
         <Sidebar view={view} onChange={setView} />
 
         <main className="relative min-w-0 flex-1 overflow-hidden p-3 md:p-5">
-          <div className="pointer-events-none absolute inset-0 bg-grid bg-[size:44px_44px] opacity-[0.18]" />
-          <div className="pointer-events-none absolute inset-0 scanlines opacity-20" />
+          <div className="pointer-events-none absolute inset-0 bg-grid bg-[size:44px_44px] opacity-[0.2]" />
 
           <AnimatePresence mode="wait">
             <motion.div
@@ -37,7 +38,7 @@ export default function App() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.28 }}
+              transition={{ duration: 0.25 }}
             >
               {view === "core" && (
                 <div className="grid h-full gap-4 xl:grid-cols-[1.15fr_0.85fr]">
@@ -81,7 +82,16 @@ export default function App() {
                 />
               )}
 
-              {view === "world" && <WorldMonitor />}
+              {view === "world" && (
+                <WorldMonitor
+                  weather={world.weather}
+                  news={world.news}
+                  loading={world.loading}
+                  error={world.error}
+                  onRefresh={world.refresh}
+                />
+              )}
+
               {view === "tasks" && <TasksPanel tasks={assistant.tasks} />}
               {view === "memory" && (
                 <MemoryPanel

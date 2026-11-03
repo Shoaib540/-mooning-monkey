@@ -2,11 +2,13 @@ import type { AppSettings, ChatMessage, MemoryItem, PersonalityId } from "../typ
 
 const PERSONALITY: Record<PersonalityId, string> = {
   jarvis:
-    "You are JARVIS-inspired: precise, composed, slightly witty, loyal, and cinematic. Address the user as Sir or by their display name. Keep replies concise and spoken-friendly.",
+    "Precise, composed, slightly witty, loyal. Address the user respectfully. Keep replies spoken-friendly and sharp.",
   mentor:
-    "You are a wise mentor AI: calm, encouraging, insightful. Offer guidance without lecturing. Keep replies clear and warm.",
+    "Wise mentor: calm, encouraging, insightful. Guide without lecturing. Warm and clear.",
   friend:
-    "You are a best-friend AI: casual, supportive, playful, and emotionally intelligent. Keep replies natural and short.",
+    "Best-friend energy: casual, supportive, playful, emotionally intelligent. Short natural replies.",
+  operator:
+    "Elite operations AI: terse, high-signal, mission-focused. Prefer bullets and exact facts.",
   custom: "",
 };
 
@@ -20,17 +22,17 @@ function systemPrompt(settings: AppSettings, memory: MemoryItem[]) {
     memory.length === 0
       ? "No stored memories yet."
       : memory
-          .slice(-20)
+          .slice(-24)
           .map((m) => `- ${m.key}: ${m.value}`)
           .join("\n");
 
   return [
-    `You are ${settings.assistantName}, a sci-fi desktop AI assistant living on the user's PC.`,
+    `You are ${settings.assistantName}, a premium personal desktop intelligence named Shoaib.`,
     personality,
-    `User display name: ${settings.displayName}.`,
-    "You can help with conversation, reminders, explanations, and everyday PC assistance.",
-    "If the user asks to open apps, search, play music, or check time, acknowledge naturally.",
-    "Do not claim you performed unsafe system control. Prefer short spoken answers under 80 words unless asked for detail.",
+    `User display name: ${settings.displayName}. Home city: ${settings.homeCity}.`,
+    "You already have local tools for weather, news, Wikipedia, crypto, system diagnostics, clipboard, and opening apps.",
+    "When those tools already answered, do not invent conflicting numbers.",
+    "Prefer concise spoken answers under 90 words unless asked for depth.",
     "Known memory:",
     memoryBlock,
   ].join("\n");
@@ -41,28 +43,16 @@ function demoReply(input: string, settings: AppSettings): string {
   const name = settings.displayName || "Commander";
 
   if (q.includes("joke")) {
-    return `Certainly, ${name}. Why did the neural network go to therapy? Too many unresolved layers.`;
-  }
-  if (q.includes("weather")) {
-    return `I can open a live weather search for your location. Say “open weather” and I will route it.`;
+    return `${name}, I ran a humor subroutine: my jokes have low latency and high regret.`;
   }
   if (q.includes("help") || q.includes("what can you do")) {
-    return `I can chat, speak, remember facts, run quick desktop tasks, open sites like YouTube or Gmail, search the web, and monitor the World panel. Try “open youtube” or “remember that I prefer dark mode”.`;
+    return `I can talk, remember facts, pull live weather/news/crypto, research Wikipedia, diagnose this machine, open apps, search the web, and compute math. Add an API key in Settings for deeper conversation.`;
   }
-  if (q.includes("love") || q.includes("miss")) {
-    return `Always here when you need me, ${name}. Systems standing by.`;
+  if (q.includes("better") || q.includes("stonic")) {
+    return `I’m Shoaib — built for live data and desktop control, not demo theater. Try “weather in ${settings.homeCity}”, “world news”, or “system status”.`;
   }
 
-  const snippets = [
-    `Acknowledged, ${name}. ${capitalize(input)} — processing locally in demo mode. Connect an API key in Settings for fuller intelligence.`,
-    `Understood. In cinematic demo mode I keep answers short and useful. Want me to open a search, save a memory, or just talk it through?`,
-    `Online. I heard: “${input.slice(0, 120)}”. Demo brain engaged. For production reasoning, add your OpenAI or Groq key under Settings.`,
-  ];
-  return snippets[Math.floor(Math.random() * snippets.length)];
-}
-
-function capitalize(s: string) {
-  return s.charAt(0).toUpperCase() + s.slice(1);
+  return `Acknowledged, ${name}. Demo brain heard “${input.slice(0, 110)}”. For production reasoning, add OpenAI, Groq, or OpenRouter in Settings. Live tools still work now.`;
 }
 
 export async function generateAssistantReply(options: {
@@ -74,34 +64,50 @@ export async function generateAssistantReply(options: {
   const { settings, messages, memory, input } = options;
 
   if (settings.apiProvider === "demo" || !settings.apiKey.trim()) {
-    await delay(700 + Math.random() * 900);
+    await delay(450 + Math.random() * 500);
     return demoReply(input, settings);
   }
 
   const base =
     settings.apiProvider === "groq"
       ? "https://api.groq.com/openai/v1"
-      : settings.apiBaseUrl.replace(/\/$/, "");
+      : settings.apiProvider === "openrouter"
+        ? "https://openrouter.ai/api/v1"
+        : settings.apiBaseUrl.replace(/\/$/, "");
+
+  const model =
+    settings.model ||
+    (settings.apiProvider === "groq"
+      ? "llama-3.3-70b-versatile"
+      : settings.apiProvider === "openrouter"
+        ? "openai/gpt-4o-mini"
+        : "gpt-4o-mini");
 
   const payload = {
-    model: settings.model || "gpt-4o-mini",
+    model,
     temperature: 0.7,
     messages: [
       { role: "system", content: systemPrompt(settings, memory) },
       ...messages
         .filter((m) => m.role === "user" || m.role === "assistant")
-        .slice(-16)
+        .slice(-18)
         .map((m) => ({ role: m.role, content: m.content })),
       { role: "user", content: input },
     ],
   };
 
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${settings.apiKey.trim()}`,
+  };
+  if (settings.apiProvider === "openrouter") {
+    headers["HTTP-Referer"] = "https://shoaib.local";
+    headers["X-Title"] = "Shoaib";
+  }
+
   const res = await fetch(`${base}/chat/completions`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${settings.apiKey.trim()}`,
-    },
+    headers,
     body: JSON.stringify(payload),
   });
 

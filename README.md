@@ -1,39 +1,43 @@
-# Stonic AI — JARVIS Desktop Clone
+# Shoaib
 
-Cinematic sci-fi desktop assistant inspired by Stonic AI / JARVIS.
+Personal cinematic desktop intelligence — original product named **Shoaib**.
 
-## Features
+Not affiliated with Stonic AI.
 
-- Frameless **Electron** desktop app (also runs in the browser)
-- Boot sequence + holographic **Core** orb
-- Voice input / TTS (Web Speech API)
-- Chat, World Monitor, Tasks, Memory, Settings
-- Personalities: JARVIS, Mentor, Friend, Custom
-- Male / female voice selection
-- Local skills: open YouTube/Gmail/GitHub, search web, play music, time, diagnostics, remember notes
-- Demo mode offline, or bring your own OpenAI / Groq / custom API key
+## Why it’s stronger
 
-## Quick start
+- **Live weather** via Open-Meteo (no API key)
+- **Live news** from BBC + NPR RSS
+- **Live crypto** from CoinGecko
+- **Wikipedia research**
+- **Public IP / geo**
+- **System diagnostics** (full in Electron)
+- Voice in/out, memory, tasks, personalities
+- OpenAI / Groq / OpenRouter / custom model providers
+
+## Run
 
 ```bash
 npm install
-npm run dev          # browser UI at http://127.0.0.1:5173
-npm run dev:electron # desktop window
+npm run dev            # browser
+npm run dev:electron   # desktop window
 ```
 
-## Build
+Voice hotkey (Electron): `Ctrl+Shift+S`
+
+## Try saying
+
+- `weather in Karachi`
+- `world news`
+- `wiki quantum computing`
+- `bitcoin price`
+- `system status`
+- `open youtube`
+- `remember that I like jazz`
+- `calculate 24 * 17`
+
+## Build installer
 
 ```bash
-npm run build
-npm run dist         # electron-builder output in release/
+npm run dist
 ```
-
-## Voice hotkey (Electron)
-
-`Ctrl+Shift+S` toggles listening.
-
-## Notes
-
-- Chrome / Edge recommended for speech recognition.
-- API keys stay in local storage on this device.
-- This is an independent clone / fan-style desktop experience, not the official Stonic product.

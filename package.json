@@ -1,9 +1,9 @@
 {
-  "name": "stonic-ai",
+  "name": "shoaib-ai",
   "private": true,
-  "version": "3.1.0",
-  "description": "Stonic AI — JARVIS-style cinematic desktop assistant",
-  "author": "Stonic Clone",
+  "version": "1.0.0",
+  "description": "Shoaib — personal cinematic desktop intelligence",
+  "author": "Shoaib",
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {
@@ -16,8 +16,8 @@
     "dist": "npm run build && electron-builder --dir"
   },
   "build": {
-    "appId": "com.stonic.ai.clone",
-    "productName": "Stonic AI",
+    "appId": "com.shoaib.ai",
+    "productName": "Shoaib",
     "directories": {
       "output": "release"
     },

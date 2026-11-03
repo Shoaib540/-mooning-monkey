@@ -77,8 +77,7 @@ export function pickVoice(gender: VoiceGender) {
     if (hit) return hit;
   }
 
-  const lang = voices.find((v) => v.lang.toLowerCase().startsWith("en"));
-  return lang || voices[0];
+  return voices.find((v) => v.lang.toLowerCase().startsWith("en")) || voices[0];
 }
 
 export function speak(text: string, gender: VoiceGender, onEnd?: () => void) {
@@ -86,7 +85,6 @@ export function speak(text: string, gender: VoiceGender, onEnd?: () => void) {
     onEnd?.();
     return;
   }
-
   window.speechSynthesis.cancel();
   const utter = new SpeechSynthesisUtterance(text);
   const voice = pickVoice(gender);

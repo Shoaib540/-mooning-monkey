@@ -6,7 +6,7 @@ export type ViewId =
   | "memory"
   | "settings";
 
-export type PersonalityId = "jarvis" | "mentor" | "friend" | "custom";
+export type PersonalityId = "jarvis" | "mentor" | "friend" | "operator" | "custom";
 
 export type VoiceGender = "male" | "female";
 
@@ -24,7 +24,6 @@ export interface ChatMessage {
   role: MessageRole;
   content: string;
   createdAt: number;
-  spoken?: boolean;
 }
 
 export interface MemoryItem {
@@ -50,29 +49,66 @@ export interface AppSettings {
   voiceGender: VoiceGender;
   voiceEnabled: boolean;
   autoGreet: boolean;
-  apiProvider: "demo" | "openai" | "groq" | "custom";
+  homeCity: string;
+  apiProvider: "demo" | "openai" | "groq" | "openrouter" | "custom";
   apiKey: string;
   apiBaseUrl: string;
   model: string;
   wakeWord: string;
 }
 
-export interface WorldHeadline {
+export interface WeatherSnapshot {
+  city: string;
+  country: string;
+  tempC: number;
+  feelsLikeC: number;
+  humidity: number;
+  windKph: number;
+  weatherCode: number;
+  description: string;
+  updatedAt: number;
+}
+
+export interface NewsItem {
   id: string;
   title: string;
-  region: string;
-  severity: "low" | "medium" | "high";
+  source: string;
+  url: string;
+  publishedAt: string;
   summary: string;
+}
+
+export interface SystemSnapshot {
+  platform: string;
+  release: string;
+  arch: string;
+  hostname: string;
+  uptimeSec: number;
+  cpuModel: string;
+  cpuCores: number;
+  totalMemGb: number;
+  freeMemGb: number;
+  usedMemGb: number;
+  homeDir?: string;
+  userInfo?: string;
+  browserFallback?: boolean;
 }
 
 declare global {
   interface Window {
-    stonicDesktop?: {
+    shoaibDesktop?: {
       minimize: () => Promise<void>;
       maximize: () => Promise<void>;
       close: () => Promise<void>;
       openExternal: (url: string) => Promise<void>;
+      openPath: (target: string) => Promise<{ ok: boolean; error: string | null }>;
+      runSafe: (commandKey: string) => Promise<{ ok: boolean; error: string | null }>;
       getVersion: () => Promise<string>;
+      getSystemInfo: () => Promise<SystemSnapshot>;
+      writeClipboard: (text: string) => Promise<boolean>;
+      readClipboard: () => Promise<string>;
+      fetchText: (url: string) => Promise<string>;
+      fetchJson: (url: string) => Promise<unknown>;
       onHotkey: (cb: (action: string) => void) => () => void;
       isDesktop: boolean;
     };

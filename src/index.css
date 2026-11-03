@@ -1,17 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --void: #02060c;
-  --panel: #07111c;
-  --cyan: #56d6ff;
-  --cyan-deep: #1090c8;
-  --amber: #ffc14d;
-  --ink: #d7f4ff;
-  --mute: #7ea8bd;
+  --void: #07080a;
+  --signal: #b8ff3c;
+  --ink: #eef3f0;
   color-scheme: dark;
 }
 
@@ -23,94 +19,49 @@ html,
 body,
 #root {
   margin: 0;
-  min-height: 100%;
   height: 100%;
+  min-height: 100%;
   background: var(--void);
   color: var(--ink);
-  font-family: "Rajdhani", sans-serif;
+  font-family: "DM Sans", sans-serif;
   overflow: hidden;
 }
 
 body {
   background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(16, 144, 200, 0.22), transparent 55%),
-    radial-gradient(ellipse 40% 30% at 90% 80%, rgba(255, 193, 77, 0.08), transparent 50%),
-    linear-gradient(180deg, #03101a 0%, #02060c 45%, #010409 100%);
+    radial-gradient(ellipse 70% 45% at 18% -5%, rgba(184, 255, 60, 0.14), transparent 55%),
+    radial-gradient(ellipse 45% 35% at 92% 8%, rgba(215, 222, 232, 0.07), transparent 50%),
+    linear-gradient(180deg, #0b0d10 0%, #07080a 50%, #050607 100%);
 }
 
 ::selection {
-  background: rgba(86, 214, 255, 0.35);
-  color: #fff;
+  background: rgba(184, 255, 60, 0.3);
+  color: #081000;
 }
 
 ::-webkit-scrollbar {
   width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(86, 214, 255, 0.45), rgba(16, 144, 200, 0.35));
+  background: linear-gradient(180deg, rgba(184, 255, 60, 0.45), rgba(111, 173, 18, 0.35));
   border-radius: 999px;
 }
 
 @layer components {
   .hud-panel {
-    @apply relative overflow-hidden rounded-sm border border-line bg-panel/80 backdrop-blur-md shadow-hud;
-  }
-
-  .hud-panel::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(
-      180deg,
-      rgba(86, 214, 255, 0.08),
-      transparent 28%,
-      transparent 72%,
-      rgba(86, 214, 255, 0.05)
-    );
+    @apply relative overflow-hidden rounded-2xl border border-line bg-panel/85 backdrop-blur-xl shadow-hud;
   }
 
   .hud-label {
-    @apply font-mono text-[11px] uppercase tracking-[0.24em] text-cyan/80;
+    @apply font-mono text-[10px] uppercase tracking-[0.28em] text-signal/80;
   }
 
   .hud-title {
-    @apply font-display text-sm uppercase tracking-[0.18em] text-ink;
+    @apply font-display text-lg font-semibold tracking-tight text-ink;
   }
 
-  .corner-frame {
-    position: relative;
-  }
-
-  .corner-frame::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-      linear-gradient(var(--cyan), var(--cyan)) top left / 14px 1px no-repeat,
-      linear-gradient(var(--cyan), var(--cyan)) top left / 1px 14px no-repeat,
-      linear-gradient(var(--cyan), var(--cyan)) top right / 14px 1px no-repeat,
-      linear-gradient(var(--cyan), var(--cyan)) top right / 1px 14px no-repeat,
-      linear-gradient(var(--cyan), var(--cyan)) bottom left / 14px 1px no-repeat,
-      linear-gradient(var(--cyan), var(--cyan)) bottom left / 1px 14px no-repeat,
-      linear-gradient(var(--cyan), var(--cyan)) bottom right / 14px 1px no-repeat,
-      linear-gradient(var(--cyan), var(--cyan)) bottom right / 1px 14px no-repeat;
-    opacity: 0.7;
-  }
-
-  .scanlines {
-    background-image: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.12) 2px,
-      rgba(0, 0, 0, 0.12) 3px
-    );
+  .field {
+    @apply w-full rounded-xl border border-line bg-void/70 px-3 py-2.5 font-body text-base text-ink outline-none transition focus:border-signal/50;
   }
 
   .no-drag {

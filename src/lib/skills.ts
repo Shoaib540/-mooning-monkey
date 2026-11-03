@@ -1,3 +1,13 @@
+import {
+  formatUptime,
+  getCryptoPrices,
+  getPublicIpInfo,
+  getSystemSnapshot,
+  getWeather,
+  getWikipediaSummary,
+  getWorldNews,
+} from "./liveData";
+import { openExternal } from "./net";
 import type { TaskItem } from "../types";
 
 export interface SkillResult {
@@ -5,6 +15,8 @@ export interface SkillResult {
   reply: string;
   task?: Omit<TaskItem, "id" | "createdAt">;
   openUrl?: string;
+  clearChat?: boolean;
+  memory?: { key: string; value: string };
 }
 
 const APP_MAP: Record<string, string> = {
@@ -13,32 +25,45 @@ const APP_MAP: Record<string, string> = {
   github: "https://github.com",
   gmail: "https://mail.google.com",
   maps: "https://maps.google.com",
-  weather: "https://www.google.com/search?q=weather",
   music: "https://music.youtube.com",
-  news: "https://news.google.com",
-  wikipedia: "https://wikipedia.org",
+  twitter: "https://x.com",
+  linkedin: "https://www.linkedin.com",
+  chatgpt: "https://chatgpt.com",
 };
-
-function uid() {
-  return crypto.randomUUID();
-}
 
 export function createTask(
   partial: Omit<TaskItem, "id" | "createdAt">,
 ): TaskItem {
-  return { ...partial, id: uid(), createdAt: Date.now() };
+  return { ...partial, id: crypto.randomUUID(), createdAt: Date.now() };
 }
 
-export async function runSkill(input: string): Promise<SkillResult | null> {
-  const text = input.trim().toLowerCase();
+function calc(expr: string): number | null {
+  const cleaned = expr.replace(/[^0-9+\-*/().%\s]/g, "").trim();
+  if (!cleaned || !/[0-9]/.test(cleaned)) return null;
+  if (!/^[\d+\-*/().%\s]+$/.test(cleaned)) return null;
+  try {
+    const value = new Function(`"use strict"; return (${cleaned});`)() as unknown;
+    return typeof value === "number" && Number.isFinite(value) ? value : null;
+  } catch {
+    return null;
+  }
+}
 
-  if (/^(what('?s| is) the )?(time|date)\b/.test(text) || text.includes("what time")) {
+export async function runSkill(
+  input: string,
+  homeCity: string,
+): Promise<SkillResult | null> {
+  const text = input.trim();
+  const lower = text.toLowerCase();
+
+  if (/^(what('?s| is) the )?(time|date)\b/.test(lower) || lower.includes("what time")) {
     const now = new Date();
     return {
       ok: true,
-      reply: `Local systems report ${now.toLocaleTimeString([], {
+      reply: `Local time is ${now.toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
+        second: "2-digit",
       })} on ${now.toLocaleDateString([], {
         weekday: "long",
         month: "long",
@@ -48,36 +73,32 @@ export async function runSkill(input: string): Promise<SkillResult | null> {
     };
   }
 
-  if (/\b(hello|hi|hey|good (morning|afternoon|evening))\b/.test(text)) {
+  if (/\b(hello|hi|hey|salam|assalam|good (morning|afternoon|evening))\b/.test(lower)) {
     return {
       ok: true,
-      reply: "Online and listening. How may I assist you?",
+      reply: "Online. I’m Shoaib — ready for voice, desktop tasks, live weather, news, and research.",
     };
   }
 
-  if (/\b(who are you|what are you|introduce yourself)\b/.test(text)) {
+  if (/\b(who are you|what are you|introduce yourself)\b/.test(lower)) {
     return {
       ok: true,
       reply:
-        "I am Stonic — your cinematic desktop intelligence. Voice, memory, and everyday PC assistance, packaged like JARVIS.",
+        "I’m Shoaib, your personal desktop intelligence. I speak, remember, pull live weather and news, research Wikipedia, track crypto, and drive everyday PC actions.",
     };
   }
 
-  const openMatch = text.match(
-    /\b(?:open|launch|start|go to)\s+(youtube|google|github|gmail|maps|weather|music|news|wikipedia)\b/,
+  const openMatch = lower.match(
+    /\b(?:open|launch|start|go to)\s+(youtube|google|github|gmail|maps|music|twitter|linkedin|chatgpt)\b/,
   );
   if (openMatch) {
     const key = openMatch[1];
     const url = APP_MAP[key];
     return {
       ok: true,
-      reply: `Opening ${key} now.`,
+      reply: `Opening ${key}.`,
       openUrl: url,
-      task: {
-        title: `Open ${key}`,
-        detail: url,
-        status: "done",
-      },
+      task: { title: `Open ${key}`, detail: url, status: "done" },
     };
   }
 
@@ -89,69 +110,250 @@ export async function runSkill(input: string): Promise<SkillResult | null> {
     const url = `https://www.google.com/search?q=${encodeURIComponent(q)}`;
     return {
       ok: true,
-      reply: `Searching the web for “${q}”.`,
+      reply: `Searching the live web for “${q}”.`,
       openUrl: url,
-      task: {
-        title: "Web search",
-        detail: q,
-        status: "done",
-      },
+      task: { title: "Web search", detail: q, status: "done" },
     };
   }
 
-  if (/\b(play music|play some music|start music)\b/.test(text)) {
+  if (/\b(play music|play some music|start music)\b/.test(lower)) {
     return {
       ok: true,
-      reply: "Routing audio to YouTube Music.",
+      reply: "Opening YouTube Music.",
       openUrl: APP_MAP.music,
-      task: {
-        title: "Play music",
-        detail: "YouTube Music",
-        status: "done",
-      },
+      task: { title: "Play music", detail: "YouTube Music", status: "done" },
     };
   }
 
-  if (/\b(system status|status report|diagnostics)\b/.test(text)) {
-    const mem = (performance as Performance & { memory?: { usedJSHeapSize: number } })
-      .memory;
-    const heap = mem
-      ? `${Math.round(mem.usedJSHeapSize / 1024 / 1024)} MB active heap`
-      : "heap telemetry unavailable in this browser";
+  const weatherMatch =
+    lower.match(/\bweather(?:\s+in\s+([a-zA-Z\s\-']+))?/) ||
+    lower.match(/\btemperature(?:\s+in\s+([a-zA-Z\s\-']+))?/);
+  if (weatherMatch) {
+    const city = (weatherMatch[1] || homeCity || "Karachi").trim();
+    try {
+      const w = await getWeather(city);
+      return {
+        ok: true,
+        reply: `${w.city}${w.country ? `, ${w.country}` : ""}: ${w.tempC.toFixed(
+          1,
+        )}°C, feels like ${w.feelsLikeC.toFixed(1)}°C, ${w.description.toLowerCase()}. Humidity ${w.humidity}%, wind ${w.windKph.toFixed(0)} km/h.`,
+        task: {
+          title: "Live weather",
+          detail: `${w.city} ${w.tempC.toFixed(1)}°C`,
+          status: "done",
+        },
+      };
+    } catch (err) {
+      return {
+        ok: false,
+        reply: `Weather lookup failed: ${err instanceof Error ? err.message : "unknown error"}`,
+        task: { title: "Live weather", detail: city, status: "failed" },
+      };
+    }
+  }
+
+  const wikiMatch = text.match(
+    /^(?:wiki|wikipedia|what is|who is|tell me about)\s+(.+)$/i,
+  );
+  if (wikiMatch) {
+    const topic = wikiMatch[1].replace(/\?+$/, "").trim();
+    try {
+      const page = await getWikipediaSummary(topic);
+      return {
+        ok: true,
+        reply: `${page.title}: ${page.extract}`,
+        openUrl: page.url || undefined,
+        task: {
+          title: "Wikipedia research",
+          detail: page.title,
+          status: "done",
+        },
+      };
+    } catch (err) {
+      return {
+        ok: false,
+        reply: `Wikipedia failed: ${err instanceof Error ? err.message : "unknown error"}`,
+        task: { title: "Wikipedia research", detail: topic, status: "failed" },
+      };
+    }
+  }
+
+  if (/\b(news|headlines|world news)\b/.test(lower)) {
+    try {
+      const news = await getWorldNews();
+      const top = news.slice(0, 5);
+      const lines = top.map((n, i) => `${i + 1}. ${n.title} (${n.source})`).join("\n");
+      return {
+        ok: true,
+        reply: `Live headlines:\n${lines}`,
+        task: {
+          title: "Live news",
+          detail: `${top.length} headlines`,
+          status: "done",
+        },
+      };
+    } catch (err) {
+      return {
+        ok: false,
+        reply: `News fetch failed: ${err instanceof Error ? err.message : "unknown error"}`,
+        task: { title: "Live news", detail: "feed error", status: "failed" },
+      };
+    }
+  }
+
+  if (/\b(crypto|bitcoin|ethereum|btc|eth|solana)\b/.test(lower)) {
+    try {
+      const prices = await getCryptoPrices();
+      const fmt = (id: string, label: string) => {
+        const row = prices[id];
+        if (!row) return `${label}: n/a`;
+        const ch = row.usd_24h_change;
+        const sign = ch && ch > 0 ? "+" : "";
+        return `${label}: $${row.usd.toLocaleString()} (${sign}${(ch || 0).toFixed(2)}% 24h)`;
+      };
+      return {
+        ok: true,
+        reply: [
+          fmt("bitcoin", "Bitcoin"),
+          fmt("ethereum", "Ethereum"),
+          fmt("solana", "Solana"),
+        ].join(". "),
+        task: { title: "Crypto prices", detail: "CoinGecko live", status: "done" },
+      };
+    } catch (err) {
+      return {
+        ok: false,
+        reply: `Crypto feed failed: ${err instanceof Error ? err.message : "unknown error"}`,
+        task: { title: "Crypto prices", detail: "error", status: "failed" },
+      };
+    }
+  }
+
+  if (/\b(my ip|ip address|where am i|network info)\b/.test(lower)) {
+    try {
+      const ip = await getPublicIpInfo();
+      return {
+        ok: true,
+        reply: `Public IP ${ip.ip}. Approx location: ${[ip.city, ip.region, ip.country_name]
+          .filter(Boolean)
+          .join(", ")}. Network: ${ip.org || "unknown"}.`,
+        task: { title: "Network info", detail: ip.ip, status: "done" },
+      };
+    } catch (err) {
+      return {
+        ok: false,
+        reply: `Network lookup failed: ${err instanceof Error ? err.message : "unknown error"}`,
+        task: { title: "Network info", detail: "error", status: "failed" },
+      };
+    }
+  }
+
+  if (/\b(system status|status report|diagnostics|system info)\b/.test(lower)) {
+    try {
+      const sys = await getSystemSnapshot();
+      return {
+        ok: true,
+        reply: `Host ${sys.hostname} · ${sys.platform}/${sys.arch} · ${sys.cpuCores} cores (${sys.cpuModel}). Memory ${sys.usedMemGb}/${sys.totalMemGb} GB used. Uptime ${formatUptime(sys.uptimeSec)}.${sys.browserFallback ? " Browser telemetry mode." : ""}`,
+        task: {
+          title: "System diagnostics",
+          detail: `${sys.platform} ${sys.release}`,
+          status: "done",
+        },
+      };
+    } catch (err) {
+      return {
+        ok: false,
+        reply: `Diagnostics failed: ${err instanceof Error ? err.message : "unknown error"}`,
+        task: { title: "System diagnostics", detail: "error", status: "failed" },
+      };
+    }
+  }
+
+  const calcMatch = lower.match(
+    /^(?:calculate|compute|math|what(?:'| i)s)\s+(.+)$/i,
+  ) || lower.match(/^([0-9().\s+\-*/%]+)$/);
+  if (calcMatch) {
+    const result = calc(calcMatch[1]);
+    if (result !== null) {
+      return {
+        ok: true,
+        reply: `Result: ${result}`,
+        task: { title: "Calculate", detail: String(result), status: "done" },
+      };
+    }
+  }
+
+  if (/\b(open calculator|launch calculator)\b/.test(lower)) {
+    if (window.shoaibDesktop?.runSafe) {
+      const res = await window.shoaibDesktop.runSafe("calculator");
+      return {
+        ok: res.ok,
+        reply: res.ok ? "Calculator launched." : `Could not open calculator: ${res.error}`,
+        task: {
+          title: "Open calculator",
+          detail: res.ok ? "native" : res.error || "failed",
+          status: res.ok ? "done" : "failed",
+        },
+      };
+    }
     return {
       ok: true,
-      reply: `Diagnostics nominal. Core online. Network reachable. ${heap}. Ready for the next directive.`,
+      reply: "Native calculator needs the Electron desktop app. Say a math expression and I’ll compute it here.",
+    };
+  }
+
+  if (/\b(open (files|file manager|explorer)|open terminal)\b/.test(lower)) {
+    if (!window.shoaibDesktop?.runSafe) {
+      return {
+        ok: false,
+        reply: "File manager / terminal control requires the Shoaib desktop app.",
+      };
+    }
+    const key = lower.includes("terminal") ? "terminal" : "files";
+    const res = await window.shoaibDesktop.runSafe(key);
+    return {
+      ok: res.ok,
+      reply: res.ok ? `Opened ${key}.` : `Failed: ${res.error}`,
       task: {
-        title: "System diagnostics",
-        detail: "All subsystems green",
-        status: "done",
+        title: `Open ${key}`,
+        detail: res.ok ? "native" : res.error || "failed",
+        status: res.ok ? "done" : "failed",
       },
     };
   }
 
-  if (/\b(clear (chat|conversation)|reset chat)\b/.test(text)) {
+  const copyMatch = text.match(/^copy\s+(.+)$/i);
+  if (copyMatch) {
+    const value = copyMatch[1].trim();
+    if (window.shoaibDesktop?.writeClipboard) {
+      await window.shoaibDesktop.writeClipboard(value);
+    } else {
+      await navigator.clipboard?.writeText(value);
+    }
     return {
       ok: true,
-      reply: "Conversation buffer cleared on request.",
-      task: {
-        title: "Clear chat",
-        detail: "User requested reset",
-        status: "done",
-      },
+      reply: "Copied to clipboard.",
+      task: { title: "Clipboard", detail: value.slice(0, 80), status: "done" },
     };
   }
 
-  if (/\bremember that\b/.test(text) || text.startsWith("remember ")) {
+  if (/\b(clear (chat|conversation)|reset chat)\b/.test(lower)) {
+    return {
+      ok: true,
+      reply: "Conversation buffer cleared.",
+      clearChat: true,
+      task: { title: "Clear chat", detail: "reset", status: "done" },
+    };
+  }
+
+  if (/^remember(?: that)?\s+/i.test(text) || /\bremember that\b/i.test(lower)) {
     const value = text.replace(/^.*remember(?: that)?\s+/i, "").trim();
     if (value) {
       return {
         ok: true,
-        reply: `Logged to memory: “${value}”.`,
-        task: {
-          title: "Save memory",
-          detail: value,
-          status: "done",
-        },
+        reply: `Saved to memory: “${value}”.`,
+        memory: { key: "note", value },
+        task: { title: "Save memory", detail: value, status: "done" },
       };
     }
   }
@@ -159,10 +361,4 @@ export async function runSkill(input: string): Promise<SkillResult | null> {
   return null;
 }
 
-export async function openTarget(url: string) {
-  if (window.stonicDesktop?.openExternal) {
-    await window.stonicDesktop.openExternal(url);
-    return;
-  }
-  window.open(url, "_blank", "noopener,noreferrer");
-}
+export { openExternal };
