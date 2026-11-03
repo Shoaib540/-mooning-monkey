@@ -210,7 +210,7 @@ export async function runSkill(
     const pick = RADIO_STATIONS[0];
     return {
       ok: true,
-      reply: `Starting ${pick.name} in Shoaib’s music player.`,
+      reply: `Starting ${pick.name} in Shoaib’s music player. Say “play Believer” for a song, or open the Music tab for stations.`,
       music: { type: "play-station", stationId: pick.id },
       openMusicView: true,
       task: { title: "Play music", detail: pick.name, status: "done" },

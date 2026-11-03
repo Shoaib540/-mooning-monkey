@@ -27,7 +27,7 @@ Voice hotkey (Electron): `Ctrl+Shift+S`
 
 ## Try saying
 
-- `play music` / `play groove salad` / `next station`
+- `play music` / `play jazz` / `next station`
 - `play Believer` (opens YouTube Music search)
 - `pause music` / `stop music`
 - `weather in Karachi`

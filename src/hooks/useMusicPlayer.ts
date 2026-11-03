@@ -27,7 +27,8 @@ export function useMusicPlayer() {
   useEffect(() => {
     const audio = new Audio();
     audio.preload = "none";
-    audio.crossOrigin = "anonymous";
+    // Do not set crossOrigin — live radio CDNs often omit CORS headers,
+    // which would break playback even though the stream itself is public.
     audioRef.current = audio;
 
     const onPlaying = () => {
@@ -76,16 +77,36 @@ export function useMusicPlayer() {
     });
     const idx = RADIO_STATIONS.findIndex((s) => s.id === station.id);
     if (idx >= 0) stationIndexRef.current = idx;
-    try {
-      audio.src = station.streamUrl;
-      await audio.play();
-      setPlaying(true);
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      setPlaying(false);
-      setError(err instanceof Error ? err.message : "Could not start playback");
+
+    const candidates = [
+      station.streamUrl,
+      station.streamUrl.replace("ice2.", "ice1."),
+      station.streamUrl.replace("ice2.", "ice4."),
+      station.streamUrl.replace("-128-mp3", "-128-aac").replace("ice2.", "ice6."),
+    ];
+
+    let lastError: unknown = null;
+    for (const url of candidates) {
+      try {
+        audio.pause();
+        audio.src = url;
+        audio.load();
+        await audio.play();
+        setPlaying(true);
+        setLoading(false);
+        return;
+      } catch (err) {
+        lastError = err;
+      }
     }
+
+    setLoading(false);
+    setPlaying(false);
+    setError(
+      lastError instanceof Error
+        ? lastError.message
+        : "Could not start playback",
+    );
   }, []);
 
   const pause = useCallback(() => {

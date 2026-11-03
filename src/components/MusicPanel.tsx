@@ -110,7 +110,7 @@ export default function MusicPanel({ music }: { music: MusicPlayer }) {
             </button>
           </form>
           <p className="font-mono text-[11px] text-mute">
-            Voice: “play radio”, “play groove salad”, “play Believer”, “pause music”,
+            Voice: “play radio”, “play jazz”, “play Believer”, “pause music”,
             “stop music”
           </p>
         </div>
@@ -119,7 +119,7 @@ export default function MusicPanel({ music }: { music: MusicPlayer }) {
       <div className="hud-panel flex flex-col overflow-hidden">
         <div className="border-b border-line px-4 py-3">
           <p className="hud-label">Live radio</p>
-          <p className="hud-title">SomaFM streams</p>
+          <p className="hud-title">Live radio streams</p>
         </div>
         <div className="flex-1 space-y-2 overflow-y-auto p-4">
           {music.stations.map((station) => {

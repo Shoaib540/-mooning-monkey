@@ -6,63 +6,64 @@ export interface RadioStation {
   homepage: string;
 }
 
-/** Free public SomaFM streams — real audio, no API key. */
+/** Public HTTPS radio streams verified for browser Audio playback. */
 export const RADIO_STATIONS: RadioStation[] = [
   {
-    id: "groovesalad",
-    name: "Groove Salad",
-    genre: "Chill / Downtempo",
-    streamUrl: "https://ice1.somafm.com/groovesalad-128-mp3",
-    homepage: "https://somafm.com/groovesalad/",
+    id: "paradise",
+    name: "Radio Paradise",
+    genre: "Eclectic / Rock",
+    streamUrl: "https://stream.radioparadise.com/aac-128",
+    homepage: "https://radioparadise.com/",
   },
   {
-    id: "spacestation",
-    name: "Space Station Soma",
-    genre: "Ambient Electronic",
-    streamUrl: "https://ice1.somafm.com/spacestation-128-mp3",
-    homepage: "https://somafm.com/spacestation/",
+    id: "classicvinyl",
+    name: "Classic Vinyl HD",
+    genre: "Classic Hits",
+    streamUrl: "https://icecast.walmradio.com:8443/classic",
+    homepage: "https://walmradio.com/",
   },
   {
-    id: "dronezone",
-    name: "Drone Zone",
-    genre: "Ambient / Drone",
-    streamUrl: "https://ice1.somafm.com/dronezone-128-mp3",
-    homepage: "https://somafm.com/dronezone/",
+    id: "jazz",
+    name: "Adroit Jazz Underground",
+    genre: "Jazz",
+    streamUrl: "https://icecast.walmradio.com:8443/jazz",
+    homepage: "https://walmradio.com/",
   },
   {
-    id: "indiepop",
-    name: "Indie Pop Rocks",
-    genre: "Indie Pop",
-    streamUrl: "https://ice1.somafm.com/indiepop-128-mp3",
-    homepage: "https://somafm.com/indiepop/",
+    id: "anonfm",
+    name: "Anon FM",
+    genre: "Electronic",
+    streamUrl: "https://icecast.anon.fm/radio",
+    homepage: "https://anon.fm/",
   },
   {
-    id: "beatblender",
-    name: "Beat Blender",
-    genre: "Deep House",
-    streamUrl: "https://ice1.somafm.com/beatblender-128-mp3",
-    homepage: "https://somafm.com/beatblender/",
+    id: "ibiza",
+    name: "Ibiza Chillout Lounge",
+    genre: "Chill / Lounge",
+    streamUrl:
+      "https://0nlineradio.radioho.st/lounge-ibiza-chillout-lounge?ref=shoaib",
+    homepage: "https://onlineradio.com/",
   },
   {
-    id: "defcon",
-    name: "DEF CON Radio",
-    genre: "Electronica",
-    streamUrl: "https://ice1.somafm.com/defcon-128-mp3",
-    homepage: "https://somafm.com/defcon/",
+    id: "secretagent",
+    name: "SomaFM Secret Agent",
+    genre: "Soundtrack / Lounge",
+    streamUrl: "https://ice5.somafm.com/secretagent-128-mp3",
+    homepage: "https://somafm.com/secretagent/",
   },
   {
-    id: "folkfwd",
-    name: "Folk Forward",
-    genre: "Alt-Folk",
-    streamUrl: "https://ice1.somafm.com/folkfwd-128-mp3",
-    homepage: "https://somafm.com/folkfwd/",
+    id: "calm",
+    name: "Calm Radio",
+    genre: "Ambient / Calm",
+    streamUrl: "https://listen9.myradio24.com/6262",
+    homepage: "https://myradio24.com/",
   },
   {
-    id: "metal",
-    name: "Metal Detector",
-    genre: "Metal",
-    streamUrl: "https://ice1.somafm.com/metal-128-mp3",
-    homepage: "https://somafm.com/metal/",
+    id: "jclub",
+    name: "J-Club Bandstand",
+    genre: "Jazz / Swing",
+    streamUrl: "https://cast1.torontocast.com:2060/;.mp3",
+    homepage: "https://torontocast.com/",
   },
 ];
 
@@ -82,7 +83,10 @@ export function findStation(query: string): RadioStation | null {
         s.id === q ||
         s.name.toLowerCase() === q ||
         s.genre.toLowerCase().includes(q) ||
-        s.name.toLowerCase().includes(q),
+        s.name.toLowerCase().includes(q) ||
+        q.split(/\s+/).every((part) =>
+          `${s.name} ${s.genre} ${s.id}`.toLowerCase().includes(part),
+        ),
     ) || null
   );
 }
