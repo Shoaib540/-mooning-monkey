@@ -2,6 +2,7 @@ export type ViewId =
   | "core"
   | "chat"
   | "world"
+  | "music"
   | "tasks"
   | "memory"
   | "settings";

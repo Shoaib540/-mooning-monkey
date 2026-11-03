@@ -5,6 +5,7 @@ import {
   LayoutDashboard,
   ListTodo,
   MessageSquareText,
+  Music2,
   Settings2,
 } from "lucide-react";
 import type { ViewId } from "../types";
@@ -13,6 +14,7 @@ const ITEMS: Array<{ id: ViewId; label: string; icon: typeof Globe2 }> = [
   { id: "core", label: "Core", icon: LayoutDashboard },
   { id: "chat", label: "Chat", icon: MessageSquareText },
   { id: "world", label: "World", icon: Globe2 },
+  { id: "music", label: "Music", icon: Music2 },
   { id: "tasks", label: "Tasks", icon: ListTodo },
   { id: "memory", label: "Memory", icon: Brain },
   { id: "settings", label: "Settings", icon: Settings2 },

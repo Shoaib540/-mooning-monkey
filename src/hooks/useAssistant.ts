@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { generateAssistantReply } from "../lib/assistant";
+import type { MusicAction } from "../lib/music";
 import { createTask, openExternal, runSkill } from "../lib/skills";
 import {
   createRecognizer,
@@ -20,7 +21,14 @@ function uid() {
   return crypto.randomUUID();
 }
 
-export function useAssistant() {
+export function useAssistant(options?: {
+  onMusicAction?: (action: MusicAction) => void | Promise<void>;
+  onOpenMusicView?: () => void;
+}) {
+  const musicRef = useRef(options);
+  useEffect(() => {
+    musicRef.current = options;
+  }, [options]);
   const [settings, setSettingsState] = useState<AppSettings>(() =>
     storage.getSettings(),
   );
@@ -98,7 +106,11 @@ export function useAssistant() {
         const skill = await runSkill(input, settingsRef.current.homeCity);
         if (skill) {
           if (skill.task) setTasks((prev) => [createTask(skill.task!), ...prev]);
-          if (skill.openUrl) await openExternal(skill.openUrl);
+          if (skill.music) await musicRef.current?.onMusicAction?.(skill.music);
+          if (skill.openMusicView) musicRef.current?.onOpenMusicView?.();
+          if (skill.openUrl && skill.music?.type !== "play-search") {
+            await openExternal(skill.openUrl);
+          }
           if (skill.memory) {
             setMemory((prev) => [
               {

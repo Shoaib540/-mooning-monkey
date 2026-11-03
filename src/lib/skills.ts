@@ -7,6 +7,13 @@ import {
   getWikipediaSummary,
   getWorldNews,
 } from "./liveData";
+import {
+  findStation,
+  RADIO_STATIONS,
+  spotifySearchUrl,
+  type MusicAction,
+  youtubeMusicSearchUrl,
+} from "./music";
 import { openExternal } from "./net";
 import type { TaskItem } from "../types";
 
@@ -17,6 +24,8 @@ export interface SkillResult {
   openUrl?: string;
   clearChat?: boolean;
   memory?: { key: string; value: string };
+  music?: MusicAction;
+  openMusicView?: boolean;
 }
 
 const APP_MAP: Record<string, string> = {
@@ -116,13 +125,123 @@ export async function runSkill(
     };
   }
 
-  if (/\b(play music|play some music|start music)\b/.test(lower)) {
+  if (
+    /\b(stop music|stop the music|stop playing|stop song|stop radio)\b/.test(
+      lower,
+    )
+  ) {
     return {
       ok: true,
-      reply: "Opening YouTube Music.",
-      openUrl: APP_MAP.music,
-      task: { title: "Play music", detail: "YouTube Music", status: "done" },
+      reply: "Music stopped.",
+      music: { type: "stop" },
+      task: { title: "Stop music", detail: "playback halted", status: "done" },
     };
+  }
+
+  if (/\b(pause music|pause the music|pause song|pause radio)\b/.test(lower)) {
+    return {
+      ok: true,
+      reply: "Paused.",
+      music: { type: "pause" },
+      task: { title: "Pause music", detail: "paused", status: "done" },
+    };
+  }
+
+  if (
+    /\b(resume music|continue music|unpause|resume playback)\b/.test(lower)
+  ) {
+    return {
+      ok: true,
+      reply: "Resuming playback.",
+      music: { type: "resume" },
+      task: { title: "Resume music", detail: "resumed", status: "done" },
+    };
+  }
+
+  if (
+    /\b(next (station|radio|track|song)|skip (station|radio|track|song))\b/.test(
+      lower,
+    )
+  ) {
+    return {
+      ok: true,
+      reply: "Switching to the next radio station.",
+      music: { type: "next-station" },
+      openMusicView: true,
+      task: { title: "Next station", detail: "radio", status: "done" },
+    };
+  }
+
+  const stationPlay =
+    lower.match(
+      /^(?:play|put on|start)\s+(?:radio\s+)?(?:station\s+)?(.+)$/i,
+    ) || lower.match(/^play\s+(.+?)\s+radio$/i);
+  if (stationPlay) {
+    const q = stationPlay[1].trim();
+    const station = findStation(q);
+    if (
+      station ||
+      /\bradio\b/.test(lower) ||
+      RADIO_STATIONS.some((s) => lower.includes(s.id))
+    ) {
+      const pick =
+        station ||
+        RADIO_STATIONS.find((s) => lower.includes(s.id)) ||
+        RADIO_STATIONS[0];
+      return {
+        ok: true,
+        reply: `Playing ${pick.name} — ${pick.genre}.`,
+        music: { type: "play-station", stationId: pick.id },
+        openMusicView: true,
+        task: {
+          title: "Play radio",
+          detail: pick.name,
+          status: "done",
+        },
+      };
+    }
+  }
+
+  if (
+    /\b(play music|play some music|start music|play radio|start radio)\b/.test(
+      lower,
+    )
+  ) {
+    const pick = RADIO_STATIONS[0];
+    return {
+      ok: true,
+      reply: `Starting ${pick.name} in Shoaib’s music player.`,
+      music: { type: "play-station", stationId: pick.id },
+      openMusicView: true,
+      task: { title: "Play music", detail: pick.name, status: "done" },
+    };
+  }
+
+  const songPlay = text.match(
+    /^(?:play|put on)\s+(?!radio\b)(.+?)(?:\s+on\s+(youtube|spotify))?$/i,
+  );
+  if (songPlay) {
+    const query = songPlay[1].trim();
+    const service = (songPlay[2] || "youtube").toLowerCase();
+    if (query && !/^music$/i.test(query)) {
+      if (service === "spotify") {
+        return {
+          ok: true,
+          reply: `Opening Spotify search for “${query}”.`,
+          openUrl: spotifySearchUrl(query),
+          openMusicView: true,
+          task: { title: "Play on Spotify", detail: query, status: "done" },
+        };
+      }
+      return {
+        ok: true,
+        reply: `Opening YouTube Music for “${query}”.`,
+        music: { type: "play-search", query },
+        openUrl: youtubeMusicSearchUrl(query),
+        openMusicView: true,
+        task: { title: "Play song", detail: query, status: "done" },
+      };
+    }
   }
 
   const weatherMatch =

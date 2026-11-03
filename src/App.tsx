@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Pause, Play, Radio } from "lucide-react";
 import BootSequence from "./components/BootSequence";
 import ChatPanel from "./components/ChatPanel";
 import CoreOrb from "./components/CoreOrb";
 import MemoryPanel from "./components/MemoryPanel";
+import MusicPanel from "./components/MusicPanel";
 import SettingsPanel from "./components/SettingsPanel";
 import Sidebar from "./components/Sidebar";
 import StatusHud from "./components/StatusHud";
@@ -12,11 +14,16 @@ import TitleBar from "./components/TitleBar";
 import WorldMonitor from "./components/WorldMonitor";
 import { useAssistant } from "./hooks/useAssistant";
 import { useLiveWorld } from "./hooks/useLiveWorld";
+import { useMusicPlayer } from "./hooks/useMusicPlayer";
 import type { ViewId } from "./types";
 
 export default function App() {
   const [view, setView] = useState<ViewId>("core");
-  const assistant = useAssistant();
+  const music = useMusicPlayer();
+  const assistant = useAssistant({
+    onMusicAction: (action) => music.dispatch(action),
+    onOpenMusicView: () => setView("music"),
+  });
   const world = useLiveWorld(assistant.settings.homeCity);
 
   return (
@@ -30,6 +37,34 @@ export default function App() {
 
         <main className="relative min-w-0 flex-1 overflow-hidden p-3 md:p-5">
           <div className="pointer-events-none absolute inset-0 bg-grid bg-[size:44px_44px] opacity-[0.2]" />
+
+          {music.nowPlaying && (
+            <button
+              onClick={() => setView("music")}
+              className="absolute right-5 top-5 z-20 flex items-center gap-3 rounded-2xl border border-signal/30 bg-panel/90 px-3 py-2 shadow-hud backdrop-blur-md"
+            >
+              <Radio size={14} className="text-signal" />
+              <div className="text-left">
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-mute">
+                  {music.playing ? "Now playing" : "Paused"}
+                </p>
+                <p className="max-w-[180px] truncate font-display text-sm font-semibold">
+                  {music.nowPlaying.title}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (music.playing) music.pause();
+                  else void music.resume();
+                }}
+                className="rounded-lg border border-line p-1.5 text-signal"
+              >
+                {music.playing ? <Pause size={14} /> : <Play size={14} />}
+              </button>
+            </button>
+          )}
 
           <AnimatePresence mode="wait">
             <motion.div
@@ -91,6 +126,8 @@ export default function App() {
                   onRefresh={world.refresh}
                 />
               )}
+
+              {view === "music" && <MusicPanel music={music} />}
 
               {view === "tasks" && <TasksPanel tasks={assistant.tasks} />}
               {view === "memory" && (

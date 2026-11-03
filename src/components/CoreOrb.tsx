@@ -67,7 +67,7 @@ export default function CoreOrb({
 
       <p className="mt-4 max-w-md text-center font-body text-base text-mute">
         Tap the core or press <span className="text-signal">Ctrl+Shift+S</span>. Try
-        “weather in Karachi”, “world news”, “wiki quantum computing”, or “system status”.
+        “play music”, “play Believer”, “weather in Karachi”, or “world news”.
       </p>
     </div>
   );
